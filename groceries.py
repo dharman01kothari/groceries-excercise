@@ -3,6 +3,7 @@
 #from pprint import pprint
 
 import sys
+import operator
 
 def to_usd(my_price):
     """
@@ -44,12 +45,16 @@ products = [
 
 # TODO: write some Python code here to produce the desired output
 
+# ---------------This section is for Part 1 of the excersice--------------------------------
+
 print("--------------------------------------------")  #print the header
 print("THERE ARE", len(products), "PRODUCTS:")
 print("--------------------------------------------")  
 print('\n')
 
-for i in products: #loop through and print 
+products2 = sorted(products, key=operator.itemgetter('name'))
+
+for i in products2: #loop through and print 
     #print("+",i["name"],"(",to_usd(i["price"]),")")  <------ alternate way
     sys.stdout.write('+ ')
     sys.stdout.write(i['name'])
@@ -59,3 +64,29 @@ for i in products: #loop through and print
     sys.stdout.write(')')
     print('\n')
     pass
+
+# ---------------This section is for Part 2 of the excersice--------------------------------
+
+dept = [] # initate new list
+
+for i in products2: # add only unique departments to the list
+    if i['department'] not in dept:
+        dept.append(i['department'])
+
+dept.sort()
+
+print("--------------------------------------------")  #print the header
+print("THERE ARE", len(dept), "DEPARTMENTS:")
+print("--------------------------------------------")  
+
+for i in dept: #looping and counting products
+    prod_count = [a for a in products2 if a['department'] == i]
+    
+    if len(prod_count) > 1:
+        label = "products"
+    else:
+        label = 'product'
+
+    print('+ ' + i.title() + ' (' + str(len(prod_count)) + ' ' + label + ')')
+
+#--------------------------------------------End-------------------------------------------------
